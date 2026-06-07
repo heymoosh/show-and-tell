@@ -1,0 +1,279 @@
+/* ==========================================================================
+   Yard Sale — scoped editorial "broadsheet meets physics lab" theme.
+   Everything is namespaced under .ys-root so nothing leaks to other pages.
+   No Tailwind theme edits; fonts loaded here.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+.ys-root {
+  --ink:        #0b0a0d;
+  --ink-2:      #131017;
+  --panel:      #17131d;
+  --panel-2:    #1e1925;
+  --line:       rgba(232, 184, 75, 0.14);
+  --line-soft:  rgba(255, 255, 255, 0.07);
+
+  --gold:       #e8b84b;
+  --gold-bright:#ffd76a;
+  --gold-deep:  #b98a2a;
+  --slate:      #8c93a6;
+  --teal:       #58c5bf;
+  --rose:       #e0556b;
+
+  --text:       #ece6da;
+  --text-dim:   #a39c8f;
+  --text-faint: #6f6a61;
+
+  --display: 'Fraunces', Georgia, serif;
+  --body:    'Newsreader', Georgia, serif;
+  --mono:    'IBM Plex Mono', ui-monospace, monospace;
+
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 700px at 78% -8%, rgba(232, 184, 75, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 0% 100%, rgba(88, 197, 191, 0.06), transparent 55%),
+    var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  font-optical-sizing: auto;
+}
+
+/* film grain overlay */
+.ys-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.ys-root * { box-sizing: border-box; }
+.ys-root ::selection { background: rgba(232, 184, 75, 0.28); color: #fff; }
+
+/* ----- typography ------------------------------------------------------- */
+.ys-display {
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0;
+}
+.ys-kicker {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.ys-lead {
+  font-family: var(--body);
+  font-size: 1.32rem;
+  line-height: 1.55;
+  color: var(--text);
+  font-weight: 300;
+}
+.ys-body { color: var(--text-dim); }
+.ys-body strong { color: var(--text); font-weight: 600; }
+.ys-body em { color: var(--gold-bright); font-style: italic; }
+.ys-num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.ys-gold { color: var(--gold); }
+.ys-rose { color: var(--rose); }
+
+.ys-root a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--line); transition: color .2s, border-color .2s; }
+.ys-root a:hover { color: var(--gold-bright); border-color: var(--gold-bright); }
+
+/* ----- shell / chrome --------------------------------------------------- */
+.ys-shell { position: relative; z-index: 2; }
+
+.ys-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.6rem;
+  background: rgba(11, 10, 13, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line-soft);
+}
+.ys-topbar .brand { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-faint); }
+.ys-back {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-dim); background: transparent; border: 1px solid var(--line-soft);
+  padding: 0.5rem 0.9rem; border-radius: 999px; cursor: pointer; transition: all .2s;
+}
+.ys-back:hover { color: #fff; border-color: var(--gold); }
+
+/* ----- hero ------------------------------------------------------------- */
+.ys-hero {
+  max-width: 1180px; margin: 0 auto; padding: 7rem 1.6rem 3.5rem;
+  text-align: center;
+}
+.ys-hero h1 { font-size: clamp(3rem, 9vw, 7.5rem); }
+.ys-hero h1 .accent { color: var(--gold); font-style: italic; }
+.ys-hero .ys-lead { max-width: 40ch; margin: 1.8rem auto 0; }
+.ys-scrollcue {
+  margin-top: 3rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--text-faint); animation: ys-bob 2.4s ease-in-out infinite;
+}
+@keyframes ys-bob { 0%,100% { transform: translateY(0); opacity: .55 } 50% { transform: translateY(6px); opacity: 1 } }
+
+/* ----- scrollytelling layout ------------------------------------------- */
+.ys-scrolly {
+  max-width: 1280px; margin: 0 auto; padding: 0 1.6rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start;
+}
+.ys-stage {
+  position: sticky; top: 9vh;
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+.ys-narrative { padding: 14vh 0; }
+.ys-step {
+  min-height: 74vh; display: flex; flex-direction: column; justify-content: center;
+  opacity: 0.25; transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.ys-step.is-active { opacity: 1; transform: none; }
+.ys-step h2 { font-size: clamp(1.9rem, 3.4vw, 3rem); margin-bottom: 1.2rem; }
+.ys-step .ys-stepno { display:block; font-family: var(--mono); color: var(--gold-deep); font-size:0.74rem; letter-spacing:.28em; margin-bottom: 1rem; }
+.ys-step p { margin: 0 0 1rem; }
+
+/* ----- stage viz panel -------------------------------------------------- */
+.ys-viz {
+  position: relative; width: 100%; aspect-ratio: 16 / 11;
+  border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden; background: var(--ink-2);
+  box-shadow: 0 30px 80px -40px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.ys-viz canvas { display: block; }
+.ys-round-pill {
+  position: absolute; top: 14px; right: 14px;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+  background: rgba(0,0,0,0.5); border: 1px solid var(--line-soft); color: var(--text-dim);
+  padding: 0.32rem 0.7rem; border-radius: 999px; backdrop-filter: blur(6px);
+}
+.ys-controls {
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 0.5rem;
+  background: rgba(11,10,13,0.82); border: 1px solid var(--line-soft);
+  padding: 0.45rem; border-radius: 14px; backdrop-filter: blur(10px);
+}
+
+/* metrics row under viz */
+.ys-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+.ys-metric {
+  background: var(--panel); border: 1px solid var(--line-soft); border-radius: 12px; padding: 0.85rem 1rem;
+}
+.ys-metric .label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); }
+.ys-metric .value { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; color: #fff; margin-top: 0.2rem; }
+.ys-metric .value.gold { color: var(--gold); }
+.ys-metric .value.rose { color: var(--rose); }
+
+/* ----- buttons / inputs ------------------------------------------------- */
+.ys-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.04em;
+  border: 1px solid var(--line-soft); background: var(--panel-2); color: var(--text);
+  width: 42px; height: 42px; border-radius: 10px; cursor: pointer; transition: all .18s;
+}
+.ys-btn:hover { border-color: var(--gold); color: #fff; }
+.ys-btn-primary { background: var(--gold); color: #1a1305; border-color: var(--gold); }
+.ys-btn-primary:hover { background: var(--gold-bright); border-color: var(--gold-bright); color: #1a1305; }
+.ys-ctl-group { display: flex; flex-direction: column; padding: 0 0.5rem; }
+.ys-ctl-group .lbl { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-faint); }
+.ys-range { -webkit-appearance: none; appearance: none; height: 4px; border-radius: 99px; background: rgba(255,255,255,0.14); outline: none; cursor: pointer; }
+.ys-range::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--gold); border: 2px solid #1a1305; }
+.ys-range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); border: 2px solid #1a1305; }
+
+/* ----- generic section + panels ---------------------------------------- */
+.ys-section { max-width: 1080px; margin: 0 auto; padding: 6rem 1.6rem; }
+.ys-section.narrow { max-width: 760px; }
+.ys-rule { height: 1px; background: linear-gradient(90deg, transparent, var(--line), transparent); margin: 0 auto; max-width: 1080px; }
+
+.ys-panel {
+  background: linear-gradient(180deg, var(--panel), var(--ink-2));
+  border: 1px solid var(--line-soft); border-radius: 16px; padding: 1.8rem;
+}
+.ys-panel.gold { border-color: var(--line); box-shadow: 0 0 0 1px rgba(232,184,75,0.06), 0 24px 60px -40px rgba(232,184,75,0.25); }
+.ys-panel.rose { border-color: rgba(224,85,107,0.28); }
+.ys-panel.teal { border-color: rgba(88,197,191,0.24); }
+.ys-panel h3 { font-family: var(--display); font-weight: 600; color: #fff; margin: 0 0 0.7rem; font-size: 1.3rem; }
+
+.ys-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+/* big stat callout */
+.ys-bigstat { text-align: center; }
+.ys-bigstat .n { font-family: var(--mono); font-weight: 600; font-size: clamp(3rem, 8vw, 6rem); color: var(--gold); line-height: 1; }
+.ys-bigstat .cap { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); margin-top: 0.6rem; }
+
+/* takeaway list */
+.ys-takeaways { list-style: none; padding: 0; margin: 1.2rem 0 0; }
+.ys-takeaways li { position: relative; padding-left: 1.6rem; margin-bottom: 0.8rem; color: var(--text-dim); }
+.ys-takeaways li::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+
+/* chart frame */
+.ys-chart { background: var(--ink-2); border: 1px solid var(--line-soft); border-radius: 12px; padding: 1rem 0.6rem 0.4rem; }
+.ys-chart .ttl { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-faint); padding: 0 0.8rem 0.6rem; }
+
+/* correlation table */
+.ys-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.82rem; }
+.ys-table th { text-align: left; color: var(--text-faint); font-weight: 500; font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--line-soft); }
+.ys-table td { padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text); }
+.ys-r-strong { color: var(--gold); }
+.ys-r-mod { color: var(--teal); }
+.ys-r-weak { color: var(--text-faint); }
+
+/* collapsible analytics */
+.ys-analytics-toggle {
+  display: flex; align-items: center; gap: 0.7rem; margin: 0 auto;
+  font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dim); background: var(--panel); border: 1px solid var(--line-soft);
+  padding: 0.8rem 1.4rem; border-radius: 999px; cursor: pointer; transition: all .2s;
+}
+.ys-analytics-toggle:hover { color: #fff; border-color: var(--gold); }
+.ys-disclaimer { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); line-height: 1.6; }
+
+/* footnote / citation */
+.ys-foot { font-size: 0.9rem; color: var(--text-faint); }
+.ys-foot a { font-size: inherit; }
+
+/* reveal helper */
+.ys-reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.ys-reveal.is-in { opacity: 1; transform: none; }
+
+/* ----- responsive: collapse the pinned layout on small screens --------- */
+@media (max-width: 900px) {
+  .ys-root { font-size: 16px; }
+  .ys-scrolly { grid-template-columns: 1fr; gap: 0; }
+  .ys-stage {
+    position: sticky; top: 0; height: auto; padding: 0.6rem 0 0.8rem;
+    background: rgba(11,10,13,0.9); backdrop-filter: blur(10px); z-index: 20;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .ys-viz { aspect-ratio: 16 / 10; }
+  .ys-narrative { padding: 2vh 0 0; }
+  .ys-step { min-height: 70vh; }
+  .ys-grid2 { grid-template-columns: 1fr; }
+  .ys-metrics { grid-template-columns: repeat(3, 1fr); }
+  .ys-hero { padding-top: 4rem; }
+}
+
+@media (max-width: 540px) {
+  .ys-topbar .brand { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ys-step, .ys-reveal, .ys-scrollcue { transition: none; animation: none; opacity: 1; transform: none; }
+}
