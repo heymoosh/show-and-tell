@@ -1,0 +1,245 @@
+{
+  "baseline_scores": {
+    "US": 35.2,
+    "UK": 37.8,
+    "Sweden": 77.9,
+    "Denmark": 76.8,
+    "Finland": 67.8,
+    "Germany": 52.9,
+    "Netherlands": 60.4,
+    "Switzerland": 67.2,
+    "Japan": 29.7,
+    "South Korea": 40.5,
+    "Singapore": 49.2,
+    "China": 26.9
+  },
+  "baseline_model_averages": {
+    "Anglo-American": 36.5,
+    "Nordic": 74.2,
+    "Rhine/Germanic": 60.2,
+    "East Asian Dev.": 39.8,
+    "Chinese State Cap.": 26.9
+  },
+  "named_sensitivity": {
+    "Equal": {
+      "Anglo-American": 36.5,
+      "Nordic": 74.2,
+      "Rhine/Germanic": 60.2,
+      "East Asian Dev.": 39.8,
+      "Chinese State Cap.": 26.9
+    },
+    "Growth-Heavy": {
+      "Anglo-American": 37.1,
+      "Nordic": 65.4,
+      "Rhine/Germanic": 55.2,
+      "East Asian Dev.": 38.3,
+      "Chinese State Cap.": 32.1
+    },
+    "Equity-Heavy": {
+      "Anglo-American": 33.6,
+      "Nordic": 78.4,
+      "Rhine/Germanic": 61.0,
+      "East Asian Dev.": 41.4,
+      "Chinese State Cap.": 22.1
+    },
+    "Sustainability-Heavy": {
+      "Anglo-American": 33.5,
+      "Nordic": 76.9,
+      "Rhine/Germanic": 58.6,
+      "East Asian Dev.": 32.4,
+      "Chinese State Cap.": 24.9
+    },
+    "Pure-GDP": {
+      "Anglo-American": 14.4,
+      "Nordic": 11.1,
+      "Rhine/Germanic": 8.9,
+      "East Asian Dev.": 23.7,
+      "Chinese State Cap.": 100.0
+    },
+    "Human-Development": {
+      "Anglo-American": 39.7,
+      "Nordic": 83.1,
+      "Rhine/Germanic": 66.2,
+      "East Asian Dev.": 42.5,
+      "Chinese State Cap.": 17.0
+    }
+  },
+  "singapore_exclusion": {
+    "with_singapore": {
+      "Anglo-American": 36.5,
+      "Nordic": 74.2,
+      "Rhine/Germanic": 60.2,
+      "East Asian Dev.": 39.8,
+      "Chinese State Cap.": 26.9
+    },
+    "without_singapore": {
+      "Anglo-American": 35.1,
+      "Nordic": 74.0,
+      "Rhine/Germanic": 59.5,
+      "East Asian Dev.": 34.0,
+      "Chinese State Cap.": 25.4
+    },
+    "east_asian_change": -5.8
+  },
+  "monte_carlo_stats": {
+    "Anglo-American": {
+      "mean": 36.5,
+      "median": 35.6,
+      "std": 7.5,
+      "p5": 25.7,
+      "p25": 30.8,
+      "p75": 41.3,
+      "p95": 50.2,
+      "first_place_pct": 0.0
+    },
+    "Chinese State Cap.": {
+      "mean": 27.1,
+      "median": 25.2,
+      "std": 12.8,
+      "p5": 9.8,
+      "p25": 17.5,
+      "p75": 34.9,
+      "p95": 50.9,
+      "first_place_pct": 3.6
+    },
+    "East Asian Dev.": {
+      "mean": 39.8,
+      "median": 40.2,
+      "std": 6.4,
+      "p5": 28.6,
+      "p25": 35.7,
+      "p75": 44.2,
+      "p95": 49.8,
+      "first_place_pct": 0.0
+    },
+    "Nordic": {
+      "mean": 74.1,
+      "median": 75.8,
+      "std": 10.2,
+      "p5": 54.6,
+      "p25": 68.1,
+      "p75": 81.6,
+      "p95": 87.8,
+      "first_place_pct": 96.1
+    },
+    "Rhine/Germanic": {
+      "mean": 60.2,
+      "median": 61.3,
+      "std": 8.5,
+      "p5": 44.5,
+      "p25": 55.4,
+      "p75": 66.1,
+      "p95": 72.0,
+      "first_place_pct": 0.2
+    }
+  },
+  "monte_carlo_no_singapore": {
+    "Anglo-American": {
+      "mean": 35.2,
+      "median": 34.4,
+      "std": 7.9,
+      "p5": 23.8,
+      "p25": 29.3,
+      "p75": 40.3,
+      "p95": 49.9,
+      "first_place_pct": 0.0
+    },
+    "Chinese State Cap.": {
+      "mean": 25.4,
+      "median": 23.5,
+      "std": 13.0,
+      "p5": 7.9,
+      "p25": 15.3,
+      "p75": 33.2,
+      "p95": 49.9,
+      "first_place_pct": 3.3
+    },
+    "East Asian Dev.": {
+      "mean": 34.1,
+      "median": 34.1,
+      "std": 7.1,
+      "p5": 22.6,
+      "p25": 29.2,
+      "p75": 39.1,
+      "p95": 45.8,
+      "first_place_pct": 0.0
+    },
+    "Nordic": {
+      "mean": 74.1,
+      "median": 75.9,
+      "std": 10.1,
+      "p5": 54.7,
+      "p25": 68.3,
+      "p75": 81.6,
+      "p95": 87.4,
+      "first_place_pct": 96.4
+    },
+    "Rhine/Germanic": {
+      "mean": 59.6,
+      "median": 60.7,
+      "std": 8.4,
+      "p5": 43.9,
+      "p25": 54.7,
+      "p75": 65.5,
+      "p95": 71.6,
+      "first_place_pct": 0.3
+    }
+  },
+  "bootstrap_uncertainty": {
+    "Anglo-American": {
+      "mean": 36.9,
+      "ci_90": [
+        32.0,
+        41.8
+      ],
+      "ci_50": [
+        34.8,
+        38.8
+      ]
+    },
+    "Chinese State Cap.": {
+      "mean": 27.1,
+      "ci_90": [
+        22.6,
+        31.8
+      ],
+      "ci_50": [
+        25.1,
+        28.9
+      ]
+    },
+    "East Asian Dev.": {
+      "mean": 39.9,
+      "ci_90": [
+        36.5,
+        43.5
+      ],
+      "ci_50": [
+        38.5,
+        41.3
+      ]
+    },
+    "Nordic": {
+      "mean": 72.2,
+      "ci_90": [
+        68.8,
+        75.7
+      ],
+      "ci_50": [
+        70.8,
+        73.7
+      ]
+    },
+    "Rhine/Germanic": {
+      "mean": 59.2,
+      "ci_90": [
+        55.7,
+        62.8
+      ],
+      "ci_50": [
+        57.7,
+        60.6
+      ]
+    }
+  }
+}
