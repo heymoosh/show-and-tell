@@ -1,5 +1,36 @@
 import React from 'react';
 import SimulationPortal from './SimulationPortal';
+import ResearchPortal from './ResearchPortal';
+
+const RESEARCH = [
+  {
+    id: 'capitalism',
+    kind: 'capitalism',
+    title: "The U.S. isn't the best at capitalism",
+    tag: 'Comparative capitalism',
+    accent: '#1f5a43',
+    accentSoft: '#e2ebe2',
+    rotate: -1.5,
+  },
+  {
+    id: 'innovation',
+    kind: 'innovation',
+    title: 'Banking rules beat venture capital',
+    tag: 'Growth & innovation',
+    accent: '#b4541f',
+    accentSoft: '#f3e4d4',
+    rotate: 1,
+  },
+  {
+    id: 'inequality',
+    kind: 'inequality',
+    title: 'Inequality fuels prosperity — until it doesn’t',
+    tag: 'Inequality & prosperity',
+    accent: '#9b2d2d',
+    accentSoft: '#f0ddd9',
+    rotate: -0.75,
+  },
+];
 
 /**
  * WorkbenchLanding - The main landing page
@@ -17,7 +48,7 @@ import SimulationPortal from './SimulationPortal';
 const WorkbenchLanding = ({ onSelectSimulation }) => {
   return (
     <div
-      className="min-h-screen w-full relative overflow-hidden"
+      className="min-h-screen w-full relative overflow-x-hidden"
       data-testid="workbench-landing"
     >
       {/* Wood Desk Background - fills entire viewport */}
@@ -56,38 +87,39 @@ const WorkbenchLanding = ({ onSelectSimulation }) => {
           </div>
         </header>
 
-        {/* Main Content - Portal(s) centered on the desk */}
-        <main className="flex-1 flex items-center justify-center px-6 py-8">
-          <div
-            className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12"
-            data-testid="card-grid"
-          >
-            {/* The Yard Sale Portal - using composite frame+illustration image */}
+        {/* Main Content - objects arranged on the desk */}
+        <main className="flex-1 flex flex-col items-center justify-center gap-10 px-6 py-10 md:gap-14">
+
+          {/* Shelf 1 — simulations */}
+          <section className="flex flex-col items-center gap-4" data-testid="card-grid">
+            <ShelfLabel>Simulations</ShelfLabel>
             <SimulationPortal
               compositeImage="/yard_sale_frame.png"
               title="The Yard Sale"
               status="ready"
               onClick={() => onSelectSimulation('oligarchy')}
-              className="w-64 md:w-72 lg:w-80"
+              className="w-56 md:w-64 lg:w-72"
             />
+          </section>
 
-            {/* Future portals will go here as they become ready:
-            <SimulationPortal
-              frameImage="/white_porcelain_frame.png"
-              illustration="/polygons.png"
-              title="Polygons"
-              status="coming-soon"
-              className="w-64 md:w-72 lg:w-80"
-            />
-            <SimulationPortal
-              frameImage="/white_painted_frame.png"
-              illustration="/outbreak.png"
-              title="Outbreak"
-              status="planned"
-              className="w-64 md:w-72 lg:w-80"
-            />
-            */}
-          </div>
+          {/* Shelf 2 — interactive research */}
+          <section className="flex w-full max-w-5xl flex-col items-center gap-5">
+            <ShelfLabel>Research · interactive reports</ShelfLabel>
+            <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {RESEARCH.map((r) => (
+                <ResearchPortal
+                  key={r.id}
+                  kind={r.kind}
+                  title={r.title}
+                  tag={r.tag}
+                  accent={r.accent}
+                  accentSoft={r.accentSoft}
+                  rotate={r.rotate}
+                  onClick={() => onSelectSimulation(r.id)}
+                />
+              ))}
+            </div>
+          </section>
         </main>
 
         {/* Minimal Footer - barely visible, part of the desk */}
@@ -104,5 +136,14 @@ const WorkbenchLanding = ({ onSelectSimulation }) => {
     </div>
   );
 };
+
+const ShelfLabel = ({ children }) => (
+  <div
+    className="font-mono text-[11px] uppercase tracking-[0.25em] text-slate-700"
+    style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
+  >
+    {children}
+  </div>
+);
 
 export default WorkbenchLanding;
