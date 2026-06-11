@@ -6,7 +6,7 @@
 
 ## The answer in one paragraph
 
-**No. Inequality past a moderate threshold is not necessary for economic prosperity or innovation — and the evidence increasingly suggests it actively suppresses both.** Some dispersion of rewards is necessary to motivate effort, risk-taking, and capital formation. Wealth concentration of the kind seen in the contemporary US is not. The empirical relationship between inequality and growth, across institutional studies (IMF, OECD, World Bank), micro-level innovation research, country case studies, and an agent-based simulation, is an **inverted-U**: prosperity peaks at moderate inequality (Gini ~0.25–0.35), and falls at both extremes. The popular framing — "inequality is the price we pay for growth" — inverts the empirical relationship past a modest threshold.
+**No. Inequality past a moderate threshold is not necessary for economic prosperity or innovation — and the evidence increasingly suggests it actively suppresses both.** Some dispersion of rewards is necessary to motivate effort, risk-taking, and capital formation. Wealth concentration of the kind seen in the contemporary US is not. The empirical relationship between inequality and growth, across institutional studies (IMF, OECD, World Bank), micro-level innovation research, country case studies, and a rebuilt agent-based simulation, is an **inverted-U**: prosperity peaks at moderate inequality (income Gini ~0.25–0.35), and falls at both extremes. (Note: this is an *income* Gini; the matching *wealth* Gini is far higher — ~0.70 even in the Nordic economies and the model's own innovation optimum, vs ~0.85 in the US.) The popular framing — "inequality is the price we pay for growth" — inverts the empirical relationship past a modest threshold.
 
 ---
 
@@ -93,30 +93,53 @@ Seven natural experiments converge on the inverted-U.
 
 ## Section 5: The simulation
 
-To test the inverted-U hypothesis under controlled conditions, an agent-based simulation was built for this report: 1,000 heterogeneous agents over 200 periods, with mechanisms drawn from standard growth theory — Cobb-Douglas production, Kaldor savings heterogeneity, Galor-Zeira credit constraints on human capital, R&D investment by the wealthy, demand-side utilization losses when median consumption diverges from mean (Summers), and stochastic shocks. A redistributive tax τ is applied to incomes and redistributed lump-sum.
+> **Note (2026 rebuild).** The simulation originally reported here was rebuilt from scratch after an audit found three disqualifying bugs: innovation was normalized by the population mean (pinning the innovation count constant in every regime — the old "innovation is flat across regimes, 2,924–3,051" result was an artifact, not a finding); the credit constraint was an absolute threshold that became vacuous once incomes compounded; and taxes were modeled as pure consumption transfer, so "redistribution lowers growth" was true by construction. The old six-regime table and 18-point Gini sweep (including the "growth peaks at Gini 0.45–0.55" claim) are **withdrawn**. What follows is the rebuilt model and its results.
 
-### 5.1 Six discrete regimes
+A simulation cannot prove what is true of real economies. Its one unique power is **decoupling**: in real data, four things always move together — reward dispersion (what an innovator personally gains), standing wealth concentration, what taxes fund, and access to finance. A model can vary them independently. So "is inequality necessary for innovation?" is split into three sub-claims tested *inside* the model:
 
-![Inequality regimes vs economic outcomes — time series across six regimes](https://d2z0o16i8xm8ak.cloudfront.net/22192f32-2ffd-4054-9c86-1f197f025d0a/178a5b19-9460-4b15-954e-b6421e3a0919/inequality-prosperity-timeseries.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMnowbzE2aTh4bThhay5jbG91ZGZyb250Lm5ldC8yMjE5MmYzMi0yZmZkLTQwNTQtOWM4Ni0xZjE5N2YwMjVkMGEvMTc4YTViMTktOTQ2MC00YjE1LTk1NGUtYjY0MjFlM2EwOTE5L2luZXF1YWxpdHktcHJvc3Blcml0eS10aW1lc2VyaWVzLnBuZz8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzgxNDAwNTcyfX19XX0_&Signature=crhGWbHM1hTSztSPDBLJ8BJqJVV0OhQIAuCEhsnw3C7FzZoeEzDOAkEqUJ8UIjYvteXjzXehswBhc2SFgQ~OxB18KQ8Y3~HPjARrc0Plkp7EbVwPU2zYxNNauBiivHFVqZg4Wr0mDPeGrNNof3Gvs7PDDL75CcpT-BySkpQOzkK8cf6vYwz~h-1PyIrzzWaxVaFACM~oM5rVTQ~2-dV3rHdtvf-j4ZNwoYVg03WvPrf0jYoCSyG2ZoYo1qwILy7EpMEejuF7cEjj~qyzwYEwl2l6y9cYN25DkBqES4xFEihOf0do0sn90-DakknbUB-57R55hKz~mSnzA3bPM5aYIQ__&Key-Pair-Id=K1BF7XGXAIMYNX)
+- **H1 — incentive necessity:** does innovation collapse when reward dispersion ρ → 0? (Near-tautological in any incentive model; stated, not claimed as a discovery.)
+- **H2 — concentration necessity:** holding rewards fixed, does *standing wealth concentration* raise innovation (risk capital, project scale-up) or lower it (talented poor excluded)?
+- **H3 — substitutability:** does concentration's financing role survive credit markets and tax-funded public R&D as alternatives?
 
-| Regime | τ | Final Gini | Avg growth (last 100 periods) | Median income | Cumulative innovations |
+The model (1,000 agents, 200 periods, 30 seeds per configuration, reproducible) gives each agent a **talent** drawn independently of wealth — talent is distributed equally; opportunity is not. Innovation projects cost a scale-free amount and can be financed three ways: self-finance (the only route that permits concave *scale-up* — the genuine pro-concentration channel), limited-liability credit, or tax-funded public R&D with a co-pay. Education is scale-free (Baumol) and gated by a relative poverty line that public education bypasses. Rents to successful innovators are paid as a capped markup, so successful innovators get rich — inequality is partly an *outcome* of innovation here, not just an input. Calibration constants are frozen from a neutral baseline (median human capital held stationary), never tuned toward any inequality-growth shape; the US-like baseline passes validation gates (reproduces wealth Gini ≈ 0.73, income Gini < wealth Gini, an interior poverty gate, sane growth). The contested demand-side channel from the old model is *excluded*.
+
+### 5.1 The necessity test
+
+The headline experiment sweeps reward dispersion ρ against redistribution τ.
+
+*[Chart to re-upload — generated locally as `e1_heatmap.png`. The embedded image below is from the withdrawn model and is outdated.]*
+
+![Necessity test: reward dispersion vs redistribution](https://d2z0o16i8xm8ak.cloudfront.net/22192f32-2ffd-4054-9c86-1f197f025d0a/178a5b19-9460-4b15-954e-b6421e3a0919/inequality-prosperity-timeseries.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMnowbzE2aTh4bThhay5jbG91ZGZyb250Lm5ldC8yMjE5MmYzMi0yZmZkLTQwNTQtOWM4Ni0xZjE5N2YwMjVkMGEvMTc4YTViMTktOTQ2MC00YjE1LTk1NGUtYjY0MjFlM2EwOTE5L2luZXF1YWxpdHktcHJvc3Blcml0eS10aW1lc2VyaWVzLnBuZz8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzgxNDAwNTcyfX19XX0_&Signature=crhGWbHM1hTSztSPDBLJ8BJqJVV0OhQIAuCEhsnw3C7FzZoeEzDOAkEqUJ8UIjYvteXjzXehswBhc2SFgQ~OxB18KQ8Y3~HPjARrc0Plkp7EbVwPU2zYxNNauBiivHFVqZg4Wr0mDPeGrNNof3Gvs7PDDL75CcpT-BySkpQOzkK8cf6vYwz~h-1PyIrzzWaxVaFACM~oM5rVTQ~2-dV3rHdtvf-j4ZNwoYVg03WvPrf0jYoCSyG2ZoYo1qwILy7EpMEejuF7cEjj~qyzwYEwl2l6y9cYN25DkBqES4xFEihOf0do0sn90-DakknbUB-57R55hKz~mSnzA3bPM5aYIQ__&Key-Pair-Id=K1BF7XGXAIMYNX)
+
+Innovation-maximizing redistribution rate τ\* and the inequality at that optimum, for each reward level ρ (mean of 30 seeds):
+
+| Reward dispersion ρ | Innovation-optimal τ\* | Cumulative innovations | Income Gini at τ\* | Wealth Gini at τ\* | Top-talent "lost Einsteins" at τ\* |
 |---|---|---|---|---|---|
-| Laissez-faire | 0.00 | 0.73 | 9.13% | 19,112 | 2,972 |
-| Light redistribution | 0.15 | 0.55 | **10.17%** | **142,233** | 3,051 |
-| Moderate (Nordic-like) | 0.30 | 0.44 | 9.59% | 80,326 | 3,000 |
-| Heavy redistribution | 0.55 | 0.31 | 9.01% | 45,585 | 2,924 |
-| Extreme equalization | 0.75 | 0.24 | 9.10% | 48,932 | 2,996 |
-| Innovation-targeted (τ=0.25 + R&D subsidy) | 0.25 | 0.52 | 9.61% | 54,309 | 3,008 |
+| 0.0 | — | 0 | — | — | — |
+| 1.0 | 0.2 | 1,640 | 0.41 | 0.76 | 62% |
+| 1.5 | 0.3 | 2,604 | 0.31 | 0.74 | 51% |
+| 2.0 | 0.4 | 3,193 | 0.24 | 0.71 | 55% |
+| 3.0 | 0.6 | 4,559 | 0.15 | 0.70 | 42% |
 
-**Laissez-faire is the worst regime for median income**, by an order of magnitude — 19,112 versus 142,233 under light redistribution. The demand-side and human-capital channels dominate. **Innovation count is remarkably flat across regimes** (2,924–3,051), consistent with the empirical evidence that aggregate innovation depends more on the breadth of the inventor pool and the human-capital base than on raw incentive intensity at the top.
+Three results, each stated only where the 95% confidence intervals separate:
 
-### 5.2 The inverted-U
+1. **H1 holds, trivially.** With ρ = 0 (no reward to innovation) the innovation count is zero at every τ. Differential reward is necessary — but this is built into any incentive model and is not evidence about how *much* dispersion is needed.
+2. **Laissez-faire is never innovation-optimal (H2).** For every positive reward level, innovation is an inverted-U in redistribution and the peak is *interior* — τ\* between 0.2 and 0.6, never 0. At τ = 0 (wealth Gini ≈ 0.89), **98–99% of the most talented agents never innovate** — they cannot afford the education gate. Standing wealth concentration does not buy innovation; it wastes inventor talent. The model's own "lost Einsteins" count is the Bell-Chetty mechanism made endogenous.
+3. **The optimum is at high reward but moderate inequality.** The innovation-optimal *income* Gini lands at ≈ 0.24–0.31 — the Nordic range — while the *wealth* Gini stays high (≈ 0.70–0.76), which is also true of real Nordic economies. The required ingredient is reward dispersion (a flow), not wealth concentration (a stock).
 
-![Inverted-U relationship between inequality and growth from 18-point tau sweep](https://d2z0o16i8xm8ak.cloudfront.net/22192f32-2ffd-4054-9c86-1f197f025d0a/085e4469-bfc3-41f6-b388-944dbce22ce0/inequality-prosperity-inverted-u.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMnowbzE2aTh4bThhay5jbG91ZGZyb250Lm5ldC8yMjE5MmYzMi0yZmZkLTQwNTQtOWM4Ni0xZjE5N2YwMjVkMGEvMDg1ZTQ0NjktYmZjMy00MWY2LWIzODgtOTQ0ZGJjZTIyY2UwL2luZXF1YWxpdHktcHJvc3Blcml0eS1pbnZlcnRlZC11LnBuZz8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzgxNDAwNTcyfX19XX0_&Signature=F5yCbb81TWSq~7SnK4ZLs0DduVx6gR5s3c7sAGTtmy4VK9q~exBoFdFzsvbx-zSL7pQ2tBX6iltaesfm~0SqZY5NQ2ZM6RpKylVsSvN0vKggfWWE6fSOU9rYG85nCOeY-3Af9M~Ey6P7OcYFn96yz3ACzQCe4LmjpOJnW8~qNiH-5eKzZjpNH6E2D5-85qEGnCRWnZfR3~opTAypSjSSpMzL-8HdxmDysFpb2BSuMs1F4K0rjxfnAibppLa~j5JqNSwFkuyDXCh1mSgwphYSmJ29DipYbwkml0njsAkE4C5RiGThufSyjvO3jbw5IBObk4-bMGzrLgCZNenWnFlEKA__&Key-Pair-Id=K1BF7XGXAIMYNX)
+### 5.2 Why redistribution helps here — and where it stops helping
 
-A sweep over 18 redistribution rates from τ=0 to τ=0.85 shows growth peaking at Gini ≈ 0.45–0.55 (corresponding to τ ≈ 0.10–0.25) and declining at both extremes.
+The inverted-U has a mechanism on each arm, isolated by switching channels off one at a time:
 
-The simulation bakes in the mechanisms (Galor-Zeira, Summers, Bell-Chetty) that produce the inverted-U. It is therefore a *consistency check* rather than independent evidence — these mechanisms, calibrated together at plausible magnitudes, produce the inverted-U observed empirically.
+| Channel removed | What happens to innovation-vs-τ |
+|---|---|
+| **Public R&D** (taxes no longer fund research) | The entire upslope vanishes — innovation collapses monotonically with τ. This is the old broken model's assumption, and it reproduces the old spurious "redistribution hurts" result. |
+| **Incentive gate** (innovators attempt regardless of after-tax payoff) | The downslope vanishes — innovation rises monotonically with τ. |
+| **Credit access / project scale-up** (the pro-*concentration* channels) | Almost no effect. In this calibration, concentration-as-risk-capital is weak. |
+
+So the **upslope** (τ from 0 to ≈ 0.3) is public investment — taxes fund education and R&D that unblock talented-but-poor inventors: as τ rises to its optimum the share of agents too poor to attempt falls from 36% to 2%, and lost Einsteins fall from 99% to 51%. The **downslope** (τ beyond the optimum) is incentive erosion — past τ\*, the after-tax reward no longer justifies the effort and *able* innovators stop trying (the incentive-blocked share rises above 90%). Redistribution raises innovation **only to the extent it funds public investment**: a robustness sweep over revenue splits (×3 financing regimes × 3 splits) confirms the interior peak everywhere, but a transfers-heavy split (90% cash transfers) yields the *weakest* innovation, while an R&D-heavy split yields the strongest and peaks at low τ. Credit-market depth barely moves the result.
+
+The simulation is a stylized mechanism map, not evidence about real economies; it bakes in Galor-Zeira credit constraints and a Bell-Chetty talent-exposure channel. What it *adds* to the empirical case is a clean separation: it shows that "inequality is necessary for innovation" conflates a true claim (reward dispersion matters) with a false one (standing wealth concentration helps), and that the entire benefit of redistribution runs through what the revenue funds.
 
 ---
 
@@ -125,6 +148,8 @@ The simulation bakes in the mechanisms (Galor-Zeira, Summers, Bell-Chetty) that 
 A critical confounder challenged the original analysis: post-war US prosperity is overdetermined by the dollar's reserve status, the rest of the industrial world being bombed flat, Bretton Woods, pent-up demand, and the GI Bill. Attributing the 1945–1973 productivity boom to compressed inequality alone is a leap. The simulation was extended with an exogenous "hegemon" productivity bonus, and three additional country cases were researched.
 
 ### 6.1 The simulation extension
+
+> **Note (2026 rebuild).** This hegemon extension runs on the *original* simulation, which has since been withdrawn and rebuilt (see the note opening Section 5). The qualitative point below — that a finite tailwind compounds for decades — does not depend on the buggy innovation/transfer mechanics, but the specific magnitudes here are pending a rebuild of this extension and should be read as illustrative.
 
 Three scenarios were tested per redistribution regime: no hegemon bonus, hegemon bonus during periods 50–100 only, and hegemon bonus active throughout. **A finite tailwind compounds for decades after it ends** — median income trajectories diverged by 10+ orders of magnitude between hegemon and no-hegemon scenarios, with the divergence persisting long after the tailwind window closed. Even a temporary positional advantage gets locked in via compounding.
 
