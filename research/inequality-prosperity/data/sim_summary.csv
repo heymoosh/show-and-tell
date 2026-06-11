@@ -1,7 +1,0 @@
-regime,tau,rd_subsidy,avg_growth_pct,final_productivity,final_gini_wealth,median_income_final,mean_income_final,cumulative_innovations,avg_capacity_util
-Laissez-faire (τ=0),0.0,0.0,9.125,34.236,0.732,19111.59,79665.64,2972,0.913
-Light redistribution (τ=0.15),0.15,0.0,10.174,37.567,0.55,142233.26,223626.19,3051,0.993
-Moderate / Nordic-like (τ=0.30),0.3,0.1,9.59,35.376,0.439,80325.75,99960.84,3000,1.0
-Heavy redistribution (τ=0.55),0.55,0.05,9.008,32.354,0.306,45585.45,47048.07,2924,1.0
-Extreme equalization (τ=0.75),0.75,0.0,9.103,35.218,0.242,48931.9,49155.33,2996,1.0
-"Innovation-targeted (τ=0.25, big R&D subsidy)",0.25,0.35,9.614,35.713,0.522,54309.07,80168.2,3008,1.0
