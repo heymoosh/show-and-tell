@@ -193,3 +193,159 @@ export function DeepAnalytics({ ensemble }) {
     </div>
   );
 }
+
+/* ----------------------------------------------------------------------- */
+/* Odds insights: escape probability + consecutive-loss cushion by class.   */
+/* ----------------------------------------------------------------------- */
+export function OddsInsights({ params, ensemble, agents, round = 0 }) {
+  if (!params) return null;
+
+  const f = params.transferPercent / 100;
+  const initial = params.initialWealth ?? 100;
+  const ruinFloor = initial * 0.01;
+
+  // Best-case escape: how many consecutive wins from the ruin floor back to start?
+  // W × (1+f)^n ≥ initial  →  n = ceil(log(initial/ruinFloor) / log(1+f))
+  const winsNeeded = Math.ceil(Math.log(initial / ruinFloor) / Math.log(1 + f));
+  const escapeOneIn = Math.round(Math.pow(2, winsNeeded));
+
+  // Consecutive-loss cushion: W × (1–f)^n = ruinFloor  →  n = floor(log(ruinFloor/W) / log(1–f))
+  const cushion = (W) => (W <= ruinFloor ? 0 : Math.floor(Math.log(ruinFloor / W) / Math.log(1 - f)));
+
+  const fmtMoney = (v) => `$${v >= 100 ? Math.round(v).toLocaleString() : v.toFixed(2)}`;
+
+  // Live class representatives drawn straight from the on-screen simulation, so
+  // the bars track the richest / median / poorest agents as the sim advances.
+  const wealths = (agents && agents.length ? agents.map((a) => a.wealth) : [initial]).slice().sort((a, b) => a - b);
+  const m = wealths.length;
+  const richest = wealths[m - 1];
+  const median = wealths[Math.floor(m / 2)];
+  const poorest = wealths[0];
+
+  const tiers = [
+    { label: 'Richest', wealth: richest, color: 'var(--gold)' },
+    { label: 'Median',  wealth: median,  color: 'var(--text-dim)' },
+    { label: poorest <= ruinFloor ? 'Ruined' : 'Poorest', wealth: poorest, color: 'var(--rose)' },
+  ].map((t) => ({ ...t, losses: cushion(t.wealth) }));
+  const maxLosses = Math.max(...tiers.map((t) => t.losses), 1);
+
+  // Empirical recovery: among sampled ruined agents, how many ended above starting wealth?
+  let everRuinedCount = null;
+  let recoveredCount = null;
+  if (ensemble) {
+    const { survivalScatter, params: ep } = ensemble;
+    const ruinedSample = survivalScatter.filter((d) => d.ruined);
+    everRuinedCount = ruinedSample.length;
+    recoveredCount = ruinedSample.filter((d) => Math.pow(10, d.logFinal) >= ep.initialWealth).length;
+  }
+
+  // Real-world felt comparisons — sorted easiest → hardest (ascending oneIn).
+  const comparisons = [
+    { event: 'Struck by lightning this year (US)',          oneIn: 1222000,    isYou: false },
+    { event: `${winsNeeded} coin flips, all heads`,         oneIn: escapeOneIn, isYou: true  },
+    { event: 'Win the Powerball jackpot',                   oneIn: 292201338,  isYou: false },
+  ].sort((a, b) => a.oneIn - b.oneIn);
+
+  return (
+    <div className="ys-grid2">
+
+      {/* ── Panel A: escape odds ── */}
+      <div className="ys-panel rose">
+        <h3>The impossible climb</h3>
+        <div style={{ margin: '1rem 0 1.1rem' }}>
+          <div className="ys-num" style={{ color: 'var(--rose)', fontWeight: 700, fontSize: 'clamp(2rem,5vw,3.2rem)', lineHeight: 1 }}>
+            1 in {escapeOneIn.toLocaleString()}
+          </div>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--text-faint)', marginTop: '0.45rem' }}>
+            best-case odds of escaping the ruin floor
+          </div>
+        </div>
+        <p className="ys-body">
+          At {params.transferPercent}% stakes, a ruined agent at {fmtMoney(ruinFloor)} needs{' '}
+          <strong>{winsNeeded} consecutive wins</strong> — not one loss allowed — to claw back to{' '}
+          {fmtMoney(initial)}. That's the minimum miracle. Any loss along the way resets the clock.
+        </p>
+
+        <table className="ys-table" style={{ marginTop: '1.1rem' }}>
+          <thead>
+            <tr><th>Event</th><th style={{ textAlign: 'right' }}>Odds (1 in …)</th></tr>
+          </thead>
+          <tbody>
+            {comparisons.map((c) => (
+              <tr key={c.event} style={c.isYou ? { background: 'rgba(224,85,107,0.08)' } : undefined}>
+                <td style={c.isYou ? { color: 'var(--rose)', fontWeight: 600 } : undefined}>
+                  {c.isYou ? '▶ ' : ''}{c.event}
+                </td>
+                <td className="ys-num" style={{ textAlign: 'right', color: c.isYou ? 'var(--rose)' : undefined }}>
+                  {c.oneIn.toLocaleString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {everRuinedCount !== null && (
+          <p className="ys-body" style={{ marginTop: '1rem', fontSize: '0.88rem' }}>
+            In practice: of {everRuinedCount} sampled agents who hit the ruin floor,{' '}
+            <strong className="ys-rose">{recoveredCount === 0 ? 'zero' : recoveredCount}</strong> recovered to their starting wealth.
+          </p>
+        )}
+      </div>
+
+      {/* ── Panel B: consecutive-loss cushion (live) ── */}
+      <div className="ys-panel gold">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem' }}>
+          <h3 style={{ margin: 0 }}>How many hits can you take?</h3>
+          <span className="ys-num" style={{ fontSize: '0.62rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--rose)', whiteSpace: 'nowrap' }}>
+            ● live · round {round.toLocaleString()}
+          </span>
+        </div>
+        <p className="ys-body" style={{ margin: '0.7rem 0 1.6rem' }}>
+          Consecutive {params.transferPercent}%-losses each of these three traders could absorb before
+          hitting the ruin floor. Watch the gap open as the simulation runs.
+        </p>
+
+        <div style={{ display: 'grid', gap: '1.3rem' }}>
+          {tiers.map((tier) => {
+            const pct = (tier.losses / maxLosses) * 100;
+            return (
+              <div key={tier.label}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.35rem' }}>
+                  <span style={{ fontSize: '0.92rem', color: tier.color, fontWeight: 600 }}>
+                    {tier.label}{' '}
+                    <span className="ys-num" style={{ color: 'var(--text-faint)', fontSize: '0.78em', fontWeight: 400 }}>
+                      {fmtMoney(tier.wealth)}
+                    </span>
+                  </span>
+                  <span className="ys-num" style={{ color: tier.color, fontWeight: 700, fontSize: '1.05rem' }}>
+                    {tier.losses}<span style={{ fontSize: '0.6em', color: 'var(--text-faint)', fontWeight: 400 }}> hit{tier.losses === 1 ? '' : 's'}</span>
+                  </span>
+                </div>
+                <div style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 5, height: 10, overflow: 'hidden' }}>
+                  <div style={{
+                    width: tier.losses === 0 ? '4px' : `${Math.max(pct, 2)}%`,
+                    height: '100%',
+                    background: tier.color,
+                    borderRadius: 5,
+                    opacity: tier.losses === 0 ? 0.6 : 0.9,
+                    transition: 'width 0.5s ease',
+                  }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <p className="ys-body" style={{ marginTop: '1.6rem', fontSize: '0.9rem', color: 'var(--text-dim)' }}>
+          The same unlucky streak that barely dents the richest wipes out the poorest. This is the
+          asymmetry hiding inside "fair."
+        </p>
+        <p className="ys-body" style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-faint)' }}>
+          Worst-case: assumes every trade is against an equally wealthy (or richer) opponent,
+          so the full {params.transferPercent}% stake always comes from the trader's own wealth.
+        </p>
+      </div>
+
+    </div>
+  );
+}
