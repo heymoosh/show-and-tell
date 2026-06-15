@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Play, Pause, RotateCcw, ArrowLeft, ChevronDown, FlaskConical } from 'lucide-react';
 import BubbleVisualizer from './BubbleVisualizer';
-import { ClimaxEvidence, DeepAnalytics } from './Analytics';
+import { ClimaxEvidence, DeepAnalytics, OddsInsights } from './Analytics';
 import { useYardSale } from './useYardSale';
 import './yardsale.css';
 
@@ -237,6 +237,21 @@ export default function YardSalePage({ onBack }) {
               technically possible but astronomically unlikely.
             </p>
           </div>
+        </section>
+
+        <div className="ys-rule" />
+
+        {/* odds & resilience */}
+        <section className="ys-section ys-reveal">
+          <div className="ys-kicker">The math of escape</div>
+          <h2 className="ys-display" style={{ fontSize: 'clamp(2rem, 4.5vw, 3.4rem)', margin: '1rem 0 1.2rem' }}>
+            "Technically possible"<br />is a lie.
+          </h2>
+          <p className="ys-lead" style={{ maxWidth: '60ch', marginBottom: '2.2rem' }}>
+            Recovery from ruin isn't just unlikely — the math makes it effectively impossible.
+            Here's what the odds actually look like, and how unequal the cushion is.
+          </p>
+          <OddsInsights params={params} ensemble={ensemble} agents={agents} round={round} />
         </section>
 
         <div className="ys-rule" />
